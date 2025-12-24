@@ -15,6 +15,9 @@
 #import "component.typ": component, interface
 
 // Export components
-#import "components/wire.typ": swire, wire, zwire
+#import "components/laser.typ": laser
+#import "components/lens.typ": lens
 #import "components/mirror.typ": mirror, flip-mirror, grating
+#import "components/objective.typ": objective
+#import "components/prism.typ": prism
 #import "components/splitter.typ": beam-splitter, beam-splitter-plate

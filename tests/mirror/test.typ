@@ -1,5 +1,5 @@
 #import "/tests/utils.typ": test
-#import "/src/lib.typ": mirror, flip-mirror, grating, set-style
+#import "/src/lib.typ": mirror, flip-mirror, grating
 
 // Test symbols
 #test({
