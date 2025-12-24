@@ -1,9 +1,22 @@
 #import "dependencies.typ": cetz
 #import "decorations.typ": current, flow, voltage
-#import "components/wire.typ": wire
 #import "utils.typ": get-label-anchor, get-style, opposite-anchor, resolve-style, expand-stroke, resolve
 #import cetz.styles: merge
 #import cetz.util: merge-dictionary
+
+#let combine-styles(uid, cetz-style, beam-style, user-style) = {
+    let beam-style = beam-style
+    let user-style = user-style
+    let user-stroke = user-style.remove("stroke", default: (:))
+
+    // Resolve style: cetz-style < beam-style < user-style
+    let style = merge(cetz-style.at(uid, default: (:)), beam-style.at(uid, default: (:)))
+    style = merge(style, user-style)
+
+    // Override stroke by user stroke
+    style = merge(expand-stroke(style), (stroke: user-stroke))
+    return style
+}
 
 #let component(
     draw: none,
@@ -34,16 +47,7 @@
         cetz.draw.set-style(..cetz.styles.default)
 
         let beam-style = get-style(ctx)
-        let user-style = params.named()
-        let user-stroke = user-style.remove("stroke", default: (:))
-        let label-defaults = user-style.remove("label-defaults", default: (:))
-
-        // Resolve style: cetz-style < beam-style < user-style
-        let style = merge(keep-style.at(uid, default: (:)), beam-style.at(uid, default: (:)))
-        style = merge(style, user-style)
-
-        // Override stroke by user stroke
-        style = merge(expand-stroke(style), (stroke: user-stroke))
+        let style = combine-styles(uid, keep-style, beam-style, params.named())
 
         let p-rotate = p-rotate
         let (ctx, ..nodes) = cetz.coordinate.resolve(ctx, ..nodes)
@@ -98,9 +102,7 @@
         // Label
         on-layer(0, {
             if label != none {
-                let label-style = beam-style.label
-                label-style = merge(label-style, style.at("label", default: (:)))
-                label-style = merge(label-style, label-defaults)
+                let label-style = merge(beam-style.label, style.at("label", default: (:)))
                 label-style = merge(label-style, if type(label) == dictionary { label } else { (content: label) })
 
                 let anchor = get-label-anchor(p-rotate)

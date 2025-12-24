@@ -21,3 +21,4 @@
 #import "components/objective.typ": objective
 #import "components/prism.typ": prism
 #import "components/splitter.typ": beam-splitter, beam-splitter-plate
+#import "components/beam.typ": beam

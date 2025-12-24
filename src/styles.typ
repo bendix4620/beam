@@ -47,19 +47,10 @@
         )
     ),
     // Components
-    resistor: (
-        variant: auto,
-        scale: auto,
-        stroke: auto,
-        fill: auto,
-        width: 1.41,
-        height: .47,
-        zigs: 3,
-    ),
     mirror: (
         scale: auto,
         stroke: auto,
-        fill: none,
+        fill: white,
         width: 1,
         height: .3,
         axis: auto,
