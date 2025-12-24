@@ -1,0 +1,14 @@
+#import "/tests/utils.typ": test
+#import "/src/lib.typ": mirror, flip-mirror, grating
+#import "/src/dependencies.typ": cetz
+
+#test({
+  import cetz.draw: *
+  for (i, a) in range(0, 360, step: 30).enumerate() {
+      cetz.draw.translate(y:-1.1)
+  
+      let position = ((0, 0), (.5, 0), (rel: (radius: .5, angle: 1deg * a)))
+      mirror("mirror", ..position, debug: false, axis: true)
+      cetz.draw.line(..position, stroke: red)
+  }
+})
