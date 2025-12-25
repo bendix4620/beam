@@ -3,8 +3,8 @@
 
 // Test symbols
 #test({
-  laser("laser", ())
-  mirror("mirror", "laser", (3, 0), (4, 2))
-  objective("obj", "mirror", "mirror.dst")
-  beam("", "laser", "mirror", "obj")
+    laser("laser", ())
+    mirror("mirror", "laser", (3, 0), (4, 2))
+    objective("obj", "mirror", "mirror.dst")
+    beam("", "laser", "mirror", "obj")
 })

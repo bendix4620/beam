@@ -3,7 +3,7 @@
 
 // Test symbols
 #for kind in ("<>", "<<", ">>", "><") {
-  test({
-    lens("", (0, 0), kind: kind)
-  })
+    test({
+        lens("", (0, 0), kind: kind)
+    })
 }

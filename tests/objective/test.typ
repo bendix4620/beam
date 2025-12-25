@@ -3,5 +3,5 @@
 
 // Test symbols
 #test({
-  objective("", (0, 0))
+    objective("", (0, 0))
 })

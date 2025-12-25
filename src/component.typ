@@ -1,6 +1,6 @@
 #import "dependencies.typ": cetz
 #import "decorations.typ": current, flow, voltage
-#import "utils.typ": get-label-anchor, get-style, opposite-anchor, resolve-style, expand-stroke, resolve
+#import "utils.typ": expand-stroke, get-label-anchor, get-style, opposite-anchor, resolve, resolve-style
 #import cetz.styles: merge
 #import cetz.util: merge-dictionary
 
@@ -61,7 +61,7 @@
                 // no idea why, but this fixes wrong rotations
                 let a1 = cetz.vector.angle2(src, c)
                 let a2 = cetz.vector.angle2(c, dst)
-                (a1 + a2)/2 + 180deg * 1 * int(a1 > a2) + 90deg
+                (a1 + a2) / 2 + 180deg * 1 * int(a1 > a2) + 90deg
             }
             p-origin = c
         }
@@ -88,7 +88,7 @@
                 if axis {
                     let style-axis = merge(beam-style.axis, resolve(style.at("axis", default: (:))))
                     let length = style-axis.remove("length", default: 1)
-                    line((-length/2, 0), (length/2, 0), ..style-axis)
+                    line((-length / 2, 0), (length / 2, 0), ..style-axis)
                 }
                 draw(ctx, nodes, style)
 

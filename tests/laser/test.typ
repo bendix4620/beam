@@ -3,5 +3,5 @@
 
 // Test symbols
 #test({
-  laser("", (0, 0))
+    laser("", (0, 0))
 })

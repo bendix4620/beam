@@ -13,7 +13,7 @@
         stroke: (
             thickness: .5pt,
             paint: auto,
-            dash: "densely-dash-dotted"
+            dash: "densely-dash-dotted",
         ),
     ),
     fill: auto,
@@ -44,7 +44,7 @@
             cap: "butt",
             join: "bevel",
             paint: green,
-        )
+        ),
     ),
     // Components
     mirror: (
@@ -86,8 +86,8 @@
         width: 1,
         height: 1,
         axis: (
-            length: 2
-        )
+            length: 2,
+        ),
     ),
     beam-splitter: (
         scale: auto,

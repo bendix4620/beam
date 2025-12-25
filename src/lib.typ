@@ -17,7 +17,7 @@
 // Export components
 #import "components/laser.typ": laser
 #import "components/lens.typ": lens
-#import "components/mirror.typ": mirror, flip-mirror, grating
+#import "components/mirror.typ": flip-mirror, grating, mirror
 #import "components/objective.typ": objective
 #import "components/prism.typ": prism
 #import "components/splitter.typ": beam-splitter, beam-splitter-plate
