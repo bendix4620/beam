@@ -20,14 +20,14 @@
 
 // Test symbols
 #test({
-    custom("custom", (0, 0), (5, 0))
+    custom("custom", (0, 0), (5, 1))
 })
 
 #test({
     set-style(my-custom-component: (stroke: red))
-    custom("custom", (0, 0), (5, 0))
+    custom("custom", (0, 0), (5, 1))
 })
 
 #test({
-    custom("custom", (0, 0), (5, 0), stroke: blue)
+    custom("custom", (0, 0), (5, 1), stroke: blue)
 })

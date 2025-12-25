@@ -89,7 +89,7 @@
                 if axis {
                     let style-axis = merge(beam-style.axis, resolve(style.at("axis", default: (:))))
                     let length = style-axis.remove("length", default: 1)
-                    line((-length / 2, 0), (length / 2, 0), ..style-axis)
+                    on-layer(2, line((-length / 2, 0), (length / 2, 0), ..style-axis))
                 }
                 draw(ctx, nodes, style)
 
