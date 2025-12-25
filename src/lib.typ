@@ -15,6 +15,7 @@
 #import "component.typ": component, interface
 
 // Export components
+#import "components/detector.typ": detector
 #import "components/laser.typ": laser
 #import "components/lens.typ": lens
 #import "components/mirror.typ": flip-mirror, grating, mirror

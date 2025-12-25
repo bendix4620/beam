@@ -55,6 +55,21 @@
         height: .3,
         axis: auto,
     ),
+    grating: (
+        scale: auto,
+        stroke: auto,
+        fill: tiling(size: (2pt, 5pt), {
+            set std.line(stroke: .5pt)
+            box(width: 100%, height: 100%, fill: white, {
+                place(std.line(start: (0%, 100%), end: (100%, 0%)))
+                place(std.line(start: (50%, 150%), end: (150%, 50%)))
+                place(std.line(start: (-50%, 50%), end: (50%, -50%)))
+            })
+        }),
+        width: 1,
+        height: .3,
+        axis: auto,
+    ),
     lens: (
         sclae: auto,
         stroke: auto,
@@ -104,5 +119,12 @@
         width: .2,
         height: 1,
         axis: auto,
+    ),
+    detector: (
+        scale: auto,
+        stroke: auto,
+        fill: black,
+        radius: .5,
+        axis: false,
     ),
 )

@@ -20,7 +20,7 @@
             line((radius: .5, angle: 45deg), (radius: .5, angle: 225deg), ..style.axis)
         }
     }
-    component("beam-splitter", name, draw: draw, ..params)
+    component("beam-splitter", name, draw: draw, ..params, num-nodes: (1, 2, 3))
 }
 
 #let beam-splitter-plate(name, ..params, flip: false) = {
@@ -35,5 +35,5 @@
 
         rect("bounds.south-west", "bounds.north-east", ..style)
     }
-    component("beam-splitter-plate", name, draw: draw, ..params)
+    component("beam-splitter-plate", name, draw: draw, ..params, num-nodes: (1, 2, 3))
 }

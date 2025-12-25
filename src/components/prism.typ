@@ -13,5 +13,5 @@
 
         polygon((0, 0), 3, angle: 180deg, ..style)
     }
-    component("prism", name, draw: draw, ..params)
+    component("prism", name, draw: draw, ..params, num-nodes: (1, 3))
 }

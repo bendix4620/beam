@@ -26,10 +26,11 @@
     rotate: 0deg,
     position: 50%,
     debug: none,
+    num-nodes: (1, 2),
     ..params,
 ) = {
     let (uid, name, ..nodes) = params.pos()
-    assert(nodes.len() in (1, 2, 3), message: "accepts only 2 or 3 (for 2 nodes components only) positional arguments")
+    assert(nodes.len() in num-nodes, message: "needs exactly " + num-nodes.map(str).join(", ", last: " or ") + " nodes")
     assert(nodes.at(1, default: none) == none or rotate == 0deg, message: "can only use rotate argument with 1 node")
     assert(type(name) == str, message: "component name must be a string")
     assert(type(scale) == float or (type(scale) == dictionary), message: "scale must be a dictionary or a float")
