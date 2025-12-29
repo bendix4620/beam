@@ -6,8 +6,6 @@
     assert(kind in ("<>", "<<", ">>", "><"), message: "Only lenses of kind '<>', '<<', '>>' or '><' are supported")
 
     let draw(ctx, position, style) = {
-        assert(position.len() < 3, message: "Lenses can have a maximum of 2 points")
-
         interface((-style.width / 2 - style.extent, -style.height / 2), (style.width / 2 + style.extent, style.height / 2), io: position.len() < 2)
 
         merge-path(close: true, ..style, {

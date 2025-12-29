@@ -40,70 +40,13 @@
     ),
     beam: (
         stroke: (
-            thickness: 10pt,
+            thickness: 14pt,
             cap: "butt",
             join: "bevel",
             paint: green,
         ),
     ),
     // Components
-    mirror: (
-        scale: auto,
-        stroke: auto,
-        fill: white,
-        width: 1,
-        height: .3,
-        axis: auto,
-    ),
-    grating: (
-        scale: auto,
-        stroke: auto,
-        fill: tiling(size: (2pt, 5pt), {
-            set std.line(stroke: .5pt)
-            box(width: 100%, height: 100%, fill: white, {
-                place(std.line(start: (0%, 100%), end: (100%, 0%)))
-                place(std.line(start: (50%, 150%), end: (150%, 50%)))
-                place(std.line(start: (-50%, 50%), end: (50%, -50%)))
-            })
-        }),
-        width: 1,
-        height: .3,
-        axis: auto,
-    ),
-    lens: (
-        sclae: auto,
-        stroke: auto,
-        fill: none,
-        width: .1,
-        height: 1,
-        extent: .1,
-        axis: auto,
-    ),
-    prism: (
-        scale: auto,
-        stroke: auto,
-        fill: none,
-        radius: .65,
-        axis: auto,
-    ),
-    laser: (
-        sclae: auto,
-        stroke: auto,
-        fill: black,
-        length: 1.5,
-        height: 1,
-        axis: auto,
-    ),
-    objective: (
-        scale: auto,
-        stroke: auto,
-        fill: black,
-        width: 1,
-        height: 1,
-        axis: (
-            length: 2,
-        ),
-    ),
     beam-splitter: (
         scale: auto,
         stroke: auto,
@@ -126,5 +69,95 @@
         fill: black,
         radius: .5,
         axis: false,
+    ),
+    filter: (
+        scale: auto,
+        stroke: auto,
+        fill: gray,
+        width: .2,
+        height: 1,
+        axis: auto,
+    ),
+    filter-rot: (
+        scale: auto,
+        stroke: auto,
+        fill: black,
+        width: .1,
+        height: 2,
+        axis: auto,
+    ),
+    grating: (
+        scale: auto,
+        stroke: auto,
+        fill: tiling(size: (2pt, 5pt), {
+            set std.line(stroke: .5pt)
+            box(width: 100%, height: 100%, fill: white, {
+                place(std.line(start: (0%, 100%), end: (100%, 0%)))
+                place(std.line(start: (50%, 150%), end: (150%, 50%)))
+                place(std.line(start: (-50%, 50%), end: (50%, -50%)))
+            })
+        }),
+        width: 1,
+        height: .3,
+        axis: auto,
+    ),
+    laser: (
+        sclae: auto,
+        stroke: auto,
+        fill: black,
+        length: 1.5,
+        height: 1,
+        axis: auto,
+    ),
+    lens: (
+        sclae: auto,
+        stroke: auto,
+        fill: none,
+        width: .1,
+        height: 1,
+        extent: .1,
+        axis: auto,
+    ),
+    mirror: (
+        scale: auto,
+        stroke: auto,
+        fill: white,
+        width: 1,
+        height: .3,
+        axis: auto,
+    ),
+    objective: (
+        scale: auto,
+        stroke: auto,
+        fill: black,
+        width: 1,
+        height: 1,
+        axis: (
+            length: 2,
+        ),
+    ),
+    pinhole: (
+        scale: auto,
+        stroke: none,
+        fill: black,
+        width: .2,
+        height: 1,
+        gap: .1,
+        axis: auto,
+    ),
+    prism: (
+        scale: auto,
+        stroke: auto,
+        fill: none,
+        radius: .65,
+        axis: auto,
+    ),
+    sample: (
+        scale: auto,
+        stroke: auto,
+        fill: aqua,
+        width: .1,
+        height: 1,
+        axis: auto,
     ),
 )

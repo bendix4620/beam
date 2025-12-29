@@ -45,6 +45,7 @@
     group(name: name, ctx => {
         // Save the current style
         let keep-style = ctx.style
+        let orig-transform = ctx.transform
         cetz.draw.set-style(..cetz.styles.default)
 
         let beam-style = get-style(ctx)
@@ -91,7 +92,15 @@
                     let length = style-axis.remove("length", default: 1)
                     on-layer(2, line((-length / 2, 0), (length / 2, 0), ..style-axis))
                 }
-                draw(ctx, nodes, style)
+                // keep passed points transformation invariant
+                get-ctx(ctx => {
+                    let t = cetz.matrix.mul-mat(
+                        cetz.matrix.inverse(ctx.transform),
+                        orig-transform,
+                    )
+                    let nodes = nodes.map(it => cetz.util.apply-transform(t, it))
+                    draw(ctx, nodes, style)
+                })
 
                 // TODO: figure out reasonable bounds for 3-point components
                 copy-anchors("bounds")
@@ -134,6 +143,7 @@
             })
         }
     })
+    move-to(name)
 }
 
 // TODO: update this to more modern and resilient function (with "wirein" and "wireout" anchors)
