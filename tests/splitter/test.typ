@@ -38,6 +38,6 @@
 
 #test({
     import cetz.draw: *
-    beam-splitter-plate("bs", (0, 0), rotate: 0deg, axis: true, flip: true)
+    beam-splitter-plate("bs", (0, 0), rotate: 10deg, axis: true, flip: true)
     cetz.draw.line("bs.src", "bs", "bs.dst", stroke: red)
 })
