@@ -1,6 +1,6 @@
 #import "dependencies.typ": cetz
 #import "decorations.typ": current, flow, voltage
-#import "utils.typ": expand-stroke, get-label-anchor, get-style, opposite-anchor, resolve, resolve-style
+#import "utils.typ": expand-stroke, get-style, opposite-anchor, resolve, resolve-style, anchor-to-angle, angle-to-anchor
 #import cetz.styles: merge
 #import cetz.util: merge-dictionary
 
@@ -14,7 +14,7 @@
     style = merge(style, user-style)
 
     // Override stroke by user stroke
-    style = merge(expand-stroke(style), (stroke: user-stroke))
+    style = merge(expand-stroke(style), expand-stroke((stroke: user-stroke)))
     return style
 }
 
@@ -115,13 +115,27 @@
                 let label-style = merge(beam-style.label, style.at("label", default: (:)))
                 label-style = merge(label-style, if type(label) == dictionary { label } else { (content: label) })
 
-                let anchor = get-label-anchor(p-rotate)
-                let resolved-anchor = if type(label-style.anchor) == str and "south" in label-style.anchor { opposite-anchor(anchor) } else { anchor }
-                content(
-                    if type(label-style.anchor) == str { "component." + label-style.anchor } else { label-style.anchor },
-                    anchor: label-style.at("align", default: resolved-anchor),
-                    label-style.content,
-                    padding: label-style.distance,
+                let (content, at, anchor, ..label-style) = label-style
+                if at == auto {
+                    at = angle-to-anchor(90deg - p-rotate)
+                    if anchor == auto {
+                        anchor = "south"
+                    }
+                }
+                if type(at) == str {
+                    if anchor == auto {
+                        anchor = angle-to-anchor(180deg + p-rotate + anchor-to-angle(at))
+                    }
+                    at = "component." + at
+                }
+                if anchor == auto {
+                    anchor = "center"
+                }
+                cetz.draw.content(
+                    at, 
+                    content,
+                    anchor: anchor,
+                    ..label-style
                 )
             }
         })

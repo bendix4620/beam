@@ -20,10 +20,10 @@
     background: white,
     foreground: black,
     label: (
-        scale: auto,
+        at: auto,
         content: none,
-        distance: 7pt,
-        anchor: "north",
+        anchor: auto,
+        padding: 7pt,
     ),
     debug: (
         stroke: (

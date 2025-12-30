@@ -1,29 +1,21 @@
-// Gives the anchor for the label depending on the component orientation in degrees
-#let get-label-anchor(angle-deg) = {
-    let angle = angle-deg.deg()
-    let normalized-angle = calc.rem(if angle < 0 { angle + 360 } else { angle }, 360)
+#let angle-to-anchor-bins = range(0, 360, step: 45)
+#let angle-to-anchor-table = ("east", "north-east", "north", "north-west", "west", "south-west", "south", "south-east")
+#let anchor-to-angle-table = angle-to-anchor-table.zip(angle-to-anchor-bins).to-dict()
 
-    let tolerance = 15
+#let normalize-angle(a) = {
+  let x = calc.rem(a.deg(), 360)
+  x + 360*int(x < 0)
+}
 
-    if calc.abs(normalized-angle) < tolerance {
-        return "south"
-    } else if calc.abs(normalized-angle - 90) < tolerance {
-        return "east"
-    } else if calc.abs(normalized-angle - 180) < tolerance {
-        return "north"
-    } else if calc.abs(normalized-angle - 270) < tolerance {
-        return "west"
-    } else {
-        if normalized-angle > 0 and normalized-angle < 90 {
-            return "south-east"
-        } else if normalized-angle > 90 and normalized-angle < 180 {
-            return "north-east"
-        } else if normalized-angle > 180 and normalized-angle < 270 {
-            return "north-west"
-        } else {
-            return "south-west"
-        }
+#let anchor-to-angle(anchor) = 1deg*anchor-to-angle-table.at(anchor, default: 0)
+
+#let angle-to-anchor(angle-deg) = {
+    let normalized-angle = normalize-angle(angle-deg -22.5deg)
+    let i = angle-to-anchor-bins.position(it => normalized-angle < it)
+    if i == none {
+      return angle-to-anchor-table.first()
     }
+    angle-to-anchor-table.at(i)
 }
 
 // Gives the opposite anchor
