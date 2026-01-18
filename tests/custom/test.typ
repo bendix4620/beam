@@ -1,0 +1,33 @@
+#import "/tests/utils.typ": test
+#import "/src/lib.typ": cetz, component, interface, set-beam-style
+
+#let custom(name, ..params) = {
+    let const = (w: 2, h: 1)
+
+    let sketch(ctx, position, style) = {
+        interface(
+            (-const.w / 2, -const.h / 2),
+            (const.w / 2, const.h / 2),
+            io: position.len() < 2,
+        )
+
+        // cetz.draw.set-style(..style)
+        cetz.draw.rect("bounds.north-east", "bounds.south-west", ..style)
+    }
+    component("my-custom-component", sketch: sketch, name, ..params)
+}
+
+
+// Test symbols
+#test({
+    custom("custom", (0, 0), (5, 1))
+})
+
+#test({
+    set-beam-style(my-custom-component: (stroke: red))
+    custom("custom", (0, 0), (5, 1))
+})
+
+#test({
+    custom("custom", (0, 0), (5, 1), stroke: blue)
+})
