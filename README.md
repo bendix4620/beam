@@ -8,12 +8,7 @@
 #beam.setup({
     import beam: *
 
-    // draw your setup, for example...
-    laser("laser", (0, 0))
-    lens("l1", (1, 0))
-    detector("cam", (2, 0))
-    beam("", "laser", "l1")
-    focus("", "l1", "cam")
+    // draw your setup here
 })
 ```
 
@@ -22,6 +17,17 @@ A Michelson interferometer and [more](./examples)
 
 ![michselson interferometer](./examples/michelson.png)
 
+## Documentation
+Automatically generate the [manual](manual.pdf) via [tidy](https://typst.app/universe/package/tidy/)
+```shell
+typst compile --root . docs/main.typ manual.pdf
+```
+
+## Tests
+Run tests locally with [tytanic](https://github.com/typst-community/tytanic)
+```shell
+tytanic run --no-fail-fast
+```
 
 ## Credits
 I built this package on the foundations of the fabulous [zap](https://typst.app/universe/package/zap/).
