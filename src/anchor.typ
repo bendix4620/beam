@@ -1,34 +1,36 @@
-#let angle-to-anchor-bins = range(0, 360, step: 45)
-#let angle-to-anchor-table = (
-    "east",
-    "north-east",
-    "north",
-    "north-west",
-    "west",
-    "south-west",
-    "south",
-    "south-east",
-)
 #let anchor-to-angle-table = (
-    angle-to-anchor-table.zip(angle-to-anchor-bins).to-dict()
+    (
+        "east",
+        "north-east",
+        "north",
+        "north-west",
+        "west",
+        "south-west",
+        "south",
+        "south-east",
+    )
+        .zip(range(0, 360, step: 45).map(i => 1deg * i))
+        .to-dict()
 )
 
 #let normalize-angle(a) = {
-    let x = calc.rem(a.deg(), 360)
-    x + 360 * int(x < 0)
+    let x = calc.rem(a.deg(), 360) * 1deg
+    x + 360deg * int(x < 0deg)
 }
 
-#let anchor-to-angle(anchor) = (
-    1deg * anchor-to-angle-table.at(anchor, default: 0)
-)
-
-#let angle-to-anchor(angle-deg) = {
-    let normalized-angle = normalize-angle(angle-deg - 22.5deg)
-    let i = angle-to-anchor-bins.position(it => normalized-angle < it)
-    if i == none {
-        return angle-to-anchor-table.first()
+#let anchor-to-angle(anchor) = {
+    if type(anchor) != str {
+        return anchor
     }
-    angle-to-anchor-table.at(i)
+    anchor-to-angle-table.at(anchor, default: anchor)
+}
+
+#let angle-to-anchor(angle) = {
+    let bins = anchor-to-angle-table.values()
+    let anchors = anchor-to-angle-table.keys()
+    let nangle = normalize-angle(angle - 22.5deg)
+    let i = bins.position(it => nangle < it)
+    if i == none { anchors.first() } else { anchors.at(i) }
 }
 
 // Gives the opposite anchor
@@ -54,23 +56,4 @@
     } else {
         panic("anchor not recognized: " + anchor)
     }
-}
-
-#import "dependencies.typ": cetz.matrix, cetz.vector
-
-#let set-column(mat, n, vec) = {
-    assert.eq(vec.len(), mat.len())
-    for m in range(0, mat.len()) {
-        mat.at(m).at(n) = vec.at(n)
-    }
-}
-
-/// get angle of rotation around z axis from transformation matrix
-#let rotation-around-z(T) = {
-    let M = set-column(T, 3, (0, 0, 0, 1))
-    // TODO: get correct angle for all coordinate systems
-    // this approach probably only works for right handed coordinates (default in cetz)
-    let v = vector.norm(matrix.mul4x4-vec3(T, (0, -1, 0)))
-    let a = calc.atan2(v.at(1), v.at(0))
-    a
 }

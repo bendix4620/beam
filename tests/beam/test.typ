@@ -13,9 +13,9 @@
     focus("", ".end", (3, 0))
 })
 
-#for i in range(0, 90, step: 20) {
+#for a in range(0, 90, step: 20).map(i => 1deg * i) {
     test({
-        cetz.draw.rotate(1deg * i)
-        fade("", (), (radius: 1, angle: 1deg * i), flip: false)
+        cetz.draw.rotate(a)
+        fade("", (), (radius: 1, angle: a), flip: false, global-rotation: a)
     })
 }

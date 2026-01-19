@@ -90,6 +90,19 @@
 }
 
 
+#let resolve-angles(
+    scope,
+    angle,
+    rotation,
+) = {
+    let (angle, co-angle) = if scope == "local" {
+        (angle, angle + rotation)
+    } else {
+        (angle - rotation, angle)
+    }
+    (angle, co-angle - 180deg, angle + rotation - 90deg)
+}
+
 /// draw the component label
 /// ```example
 /// >>> #box(width: 5cm)[
@@ -103,64 +116,75 @@
     /// -> str
     name,
     /// -> angle
-    local-rotation,
-    /// -> angle
-    global-rotation,
-    /// where to position the label, given as anchor of bounds or angle -> str | angle
-    pos: 90deg,
+    rotation,
     /// #set raw(lang: "typc")
-    /// relative to wich scope the label should be positioned
-    /// - `"local"` relative to local component coordinate system
-    /// - `"parent"` relative to coordinate system the component is placed in
-    /// - `"global"` relative to the canvas's coordinate system
+    ///  ```none
+    ///            north/90deg
+    ///              ______
+    ///             |      |
+    /// west/180deg |      | east/0deg
+    ///             |______|
+    ///
+    ///           south/270deg
+    /// ```
+    /// Imagine a component with anchors like above.
+    /// The `scope` argument defines how the given angle is interpreted in terms of the components rotation.
+    /// This does not account for external rotations on the canvas.
+    /// - `"local"` the position is resolve relative to the component bbox after rotation
+    /// - `"parent"` the position is resolved relative to the component bbox before rotation
     /// -> str
-    scope: "global",
+    scope: "local",
+    /// where to position the label -> str | angle
+    pos: 90deg,
     /// the label content -> none | content
     content: none,
     /// label anchor. `auto` will try to pick anchor so that label and component do not overlap -> auto | str
     anchor: auto,
     /// rotate the label. `auto` will rotate the label with its position -> auto | angle
-    rotate: 0deg,
-    /// label content padding -> length | dictionary
-    padding: 7pt,
+    angle: 0deg,
+    /// label content padding -> int | float | length | dictionary
+    padding: .1,
     /// additional styling passed to cetz's `content()`
     /// -> style
     ..style,
 ) = {
-    if content != none {
-        assert(
-            scope in ("local", "parent", "global"),
-            message: "label scope must be \"local\", \"parent\" or \"global\"",
-        )
-        let pos-angle = if type(pos) == str {
-            anchor-to-angle(pos)
-        } else if type(pos) == angle {
-            pos
-        } else {
-            panic(
-                root + ".label.pos must be str or angle, got " + repr(type(pos)),
-            )
-        }
-        let (pos-angle, anchor-angle) = rotate-label(
-            scope,
-            pos-angle,
-            local-rotation,
-            global-rotation,
-        )
-        if anchor == auto {
-            anchor = angle-to-anchor(anchor-angle)
-        }
-        if rotate == auto {
-            rotate = pos-angle
-        }
-
-        draw.content(
-            name + ".bounds." + repr(pos-angle),
-            content,
-            ..style,
-            anchor: anchor,
-            rotate: rotate,
-            padding: padding,
-        )
+    if content == none {
+        return
     }
+    assert(
+        scope in ("local", "parent"),
+        message: "label scope must be \"local\" or \"parent\"",
+    )
+    assert(type(pos) in (str, std.angle), message: "label position must be str or angle")
+
+    pos = anchor-to-angle(pos)
+    if type(pos) != std.angle {
+        // fancy automatic placement not possible
+        if anchor == auto {
+            anchor = "center"
+        }
+        if angle == auto {
+            angle = 0deg
+        }
+    } else {
+        // fancy automatic placement works
+        let (pos-candidate, anchor-candidate, angle-candidate) = resolve-angles(scope, pos, rotation)
+        pos = repr(pos-candidate)
+        if anchor == auto {
+            anchor = angle-to-anchor(anchor-candidate)
+        }
+        if angle == auto {
+            angle = angle-candidate
+            anchor = "south"
+        }
+    }
+
+    draw.content(
+        name + ".bounds." + pos,
+        content,
+        ..style,
+        anchor: anchor,
+        angle: angle,
+        padding: padding,
+    )
 }

@@ -1,7 +1,6 @@
 /// Components
 
 #import "dependencies.typ": cetz
-#import "anchor.typ": rotation-around-z
 #import "decoration.typ": sketch-axis, sketch-debug, sketch-label
 #import cetz: coordinate, draw, matrix, styles
 
@@ -79,7 +78,10 @@
         message: "takes " + num-points.map(str).join(", ", last: " or ") + " points, got " + repr(points.len()),
     )
     // assert(points.len() == 2 or position == 50%, message: "position only works with 2 points")
-    assert(type(position) in (relative, length, ratio), message: "position must be length, relative or ratio")
+    assert(
+        type(position) in (int, float, relative, length, ratio),
+        message: "position must be int, float, length, relative or ratio",
+    )
     assert(points.len() == 1 or rotate == 0deg, message: "rotate only works with 1 point")
     assert(type(rotate) == angle, message: "rotate must angle")
     assert(
@@ -160,7 +162,7 @@
         // anchor are only accessible outside the group
         sketch-debug(name, ..debug-style)
         // labels are not part of the group bounding box
-        sketch-label(name, p-rotate, rotation-around-z(initial-transform), ..label-style)
+        sketch-label(name, p-rotate, ..label-style)
     })
 }
 

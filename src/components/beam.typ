@@ -1,5 +1,4 @@
 #import "/src/component.typ": component, interface, wrap-ctx
-#import "/src/anchor.typ": normalize-angle, rotation-around-z
 #import "/src/dependencies.typ": cetz
 #import cetz: vector
 #import cetz.draw: *
@@ -96,49 +95,44 @@
     if flip {
         points = points.rev()
     }
+    let sketch(ctx, points, style) = {
+        let extent = style.stroke.thickness / ctx.length
+        let color = style.stroke.paint
 
-    get-ctx(ctx => {
-        let initial-angle = rotation-around-z(ctx.transform)
+        // gradient fill is calculated with respect to the AABB.
+        // Introduce an offset in the AABB corners to fit the gradient to the rendered shape
+        let angle = style.global-rotation + vector.angle2(..points)
+        let padding = (
+            calc.abs(calc.sin(angle) * calc.cos(angle)) * extent
+        )
+        let length = cetz.vector.dist(..points)
+        let ratios = (
+            0,
+            padding,
+            length + padding,
+            length + 2 * padding,
+        )
+        let colors = (
+            color,
+            color,
+            color.transparentize(100%),
+            color.transparentize(100%),
+        )
+        let fill = gradient.linear(
+            ..colors.zip(ratios.map(it => 100% * (it / ratios.last()))),
+            angle: -angle, //- angle
+        )
 
-        let sketch(ctx, points, style) = {
-            let extent = style.stroke.thickness / ctx.length
-            let color = style.stroke.paint
-
-            // gradient fill is calculated with respect to the AABB.
-            // Introduce an offset in the AABB corners to fit the gradient to the rendered shape
-            let angle = initial-angle + vector.angle2(..points)
-            let padding = (
-                calc.abs(calc.sin(angle) * calc.cos(angle)) * extent
-            )
-            let length = cetz.vector.dist(..points)
-            let ratios = (
-                0,
-                padding,
-                length + padding,
-                length + 2 * padding,
-            )
-            let colors = (
-                color,
-                color,
-                color.transparentize(100%),
-                color.transparentize(100%),
-            )
-            let fill = gradient.linear(
-                ..colors.zip(ratios.map(it => 100% * (it / ratios.last()))),
-                angle: -angle, //- angle
-            )
-
-            interface(
-                (-length / 2, -extent / 2),
-                (length / 2, extent / 2),
-            )
-            on-layer(-1, rect(
-                "bounds.north-west",
-                "bounds.south-east",
-                fill: fill,
-                stroke: none,
-            ))
-        }
-        component("beam", name, ..points, ..style-decoration, sketch: sketch, num-nodes: (2,))
-    })
+        interface(
+            (-length / 2, -extent / 2),
+            (length / 2, extent / 2),
+        )
+        on-layer(-1, rect(
+            "bounds.north-west",
+            "bounds.south-east",
+            fill: fill,
+            stroke: none,
+        ))
+    }
+    component("beam", name, ..points, ..style-decoration, sketch: sketch, num-nodes: (2,))
 }
