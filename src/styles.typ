@@ -12,7 +12,7 @@
     ),
     label: (
         pos: 90deg,
-        scope: "global",
+        scope: "local",
         content: none,
         anchor: auto,
         rotate: auto,
@@ -38,6 +38,7 @@
             join: "bevel",
             paint: green,
         ),
+        global-rotation: 0deg,
     ),
     // Components
     beam-splitter: (

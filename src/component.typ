@@ -1,7 +1,6 @@
 /// Components
 
 #import "dependencies.typ": cetz
-#import "anchor.typ": rotation-around-z
 #import "decoration.typ": sketch-axis, sketch-debug, sketch-label
 #import cetz: coordinate, draw, matrix, styles
 
@@ -163,7 +162,7 @@
         // anchor are only accessible outside the group
         sketch-debug(name, ..debug-style)
         // labels are not part of the group bounding box
-        sketch-label(name, p-rotate, rotation-around-z(initial-transform), ..label-style)
+        sketch-label(name, p-rotate, ..label-style)
     })
 }
 
