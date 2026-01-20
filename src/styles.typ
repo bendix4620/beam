@@ -83,12 +83,11 @@
     filter-rot: (
         scale: auto,
         fill: auto,
-        stroke: none,
+        stroke: (thickness: .05),
         axis: auto,
         label: auto,
         debug: auto,
-        width: .1,
-        height: 2,
+        diameter: 1.6,
     ),
     grating: (
         scale: auto,

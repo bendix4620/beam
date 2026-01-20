@@ -1,5 +1,5 @@
 #import "/tests/utils.typ": test
-#import "/src/lib.typ": beam, filter, filter-rot
+#import "/src/lib.typ": cetz.draw.line, filter, filter-rot
 
 // Test symbols
 #test({
@@ -7,5 +7,6 @@
 })
 
 #test({
-    filter-rot("", (0, 0))
+    filter-rot("fw", (0, 0))
+    line("fw.in", "fw", "fw.o", "fw.out", stroke: red)
 })

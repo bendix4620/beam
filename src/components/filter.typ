@@ -42,21 +42,27 @@
     name,
     /// -> coordinate | style | decoration
     ..points-style-decoration,
+    /// flip the filter -> true
+    flip: false,
 ) = {
     let sketch(ctx, position, style) = {
+        let h = style.diameter
+        let w = style.stroke.thickness * 2
+        if position.len() < 2 {
+            anchor("in", (-w / 2, 0))
+            anchor("out", (w / 2, 0))
+        }
+        translate(y: h / 4 * (1 - 2 * int(flip)))
         interface(
-            (-style.width / 2, -style.height / 2),
-            (style.width / 2, style.height / 2),
-            io: true,
+            (-w / 2, -h / 2),
+            (w / 2, h / 2),
         )
-
-        translate(y: style.height / 6)
         rect(
-            (-style.width / 2, -style.width / 2),
-            (style.width / 2, style.width / 2),
-            ..style,
+            (-w / 2, -w / 2),
+            (w / 2, w / 2),
+            fill: style.fill,
         )
-        line((0, -style.height / 3), (0, style.height / 3))
+        line((0, -h / 2), (0, h / 2), stroke: style.stroke)
     }
     component("filter-rot", name, ..points-style-decoration, sketch: sketch)
 }
