@@ -19,3 +19,30 @@
         fade("", (), (radius: 1, angle: a), flip: false, global-rotation: a)
     })
 }
+
+#test({
+    beam("beam", (0, 0), (1, 0), (1, 1), (-1, 1), (-1, -1), (1, -1))
+    cetz.draw.for-each-anchor(
+        "beam",
+        exclude: (
+            "north",
+            "north-west",
+            "west",
+            "south-west",
+            "south",
+            "south-east",
+            "east",
+            "north-east",
+            "center",
+            "inner",
+            "start",
+            "mid",
+            "end",
+            "centroid",
+        ),
+        name => {
+            cetz.draw.circle("beam." + name, radius: .1)
+            cetz.draw.content((rel: (0, .3)), [#name])
+        },
+    )
+})

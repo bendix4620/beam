@@ -22,7 +22,17 @@
     assert(points.len() >= 2, message: "need at least 2 nodes")
 
     wrap-ctx(points, style-decoration, "beam", (ctx, points, style) => {
-        on-layer(-1, line(..points, ..style, name: name))
+        group(name: name, {
+            on-layer(-1, line(..points, ..style, name: "inner"))
+            copy-anchors("inner")
+
+            let (p1, ..other, pn) = points
+            anchor("in", p1)
+            anchor("out", pn)
+            for (i, p) in other.enumerate(start: 1) {
+                anchor(numbering("a", i), p)
+            }
+        })
     })
 }
 
