@@ -16,10 +16,10 @@
         // resolve component style
         let style = styles.resolve(ctx.beam.style, merge: style, root: root)
 
-        // TODO: change get-ctx() to scope()
+        // TODO: use scope() here
         // cetz 0.4.2 has a bug where the inner group in `group(scope(group(anchor("default", ()))))` cannot be accessed.
-        // but its already fixed in dev version
-        draw.get-ctx(ctx => wrapped(ctx, points, style))
+        // its already fixed in dev version
+        wrapped(ctx, points, style)
     })
 }
 
@@ -159,10 +159,13 @@
             sketch-axis(..axis-style)
         })
 
-        // anchor are only accessible outside the group
-        sketch-debug(name, ..debug-style)
-        // labels are not part of the group bounding box
-        sketch-label(name, p-rotate, ..label-style)
+        // TODO: move this scope to wrap-ctx
+        draw.scope({
+            // anchor are only accessible outside the group
+            sketch-debug(name, ..debug-style)
+            // labels are not part of the group bounding box
+            sketch-label(name, p-rotate, ..label-style)
+        })
     })
 }
 
