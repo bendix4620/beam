@@ -2,15 +2,42 @@
 #import "/src/dependencies.typ": cetz
 #import cetz.draw: *
 
-#let sketch(ctx, points, style) = {
-    interface((-style.height, -style.width / 2), (0, style.width / 2))
+#let sketch(ctx, points, style, kind: ")") = {
+    set-style(..style)
+    if kind == "|" {
+        interface((-style.width, -style.height / 2), (0, style.height / 2))
+        rect("bounds.north-east", "bounds.south-west")
+    } else {
+        let (pad-out, pad-in) = if kind == ")" {
+            (-style.extent, 0)
+        } else if kind == "(" {
+            (0, -style.extent)
+        }
+        translate(x: -pad-in)
+        merge-path(close: true, {
+            arc-through(
+                (pad-out, style.height / 2),
+                (pad-in, 0),
+                (pad-out, -style.height / 2),
+            )
+            line(
+                (-style.width, -style.height / 2),
+                (-style.width, style.height / 2),
+            )
+            // translate(x: -pad-in)
+            interface(
+                (-style.width, -style.height / 2),
+                (0, style.height / 2),
+            )
+        })
+    }
 
-    // how to handle 2-part component styles?
-    rect((-style.height * .67, -style.width / 2), (0, style.width / 2), ..style)
     rect(
-        (-style.height, -style.width / 2),
-        (-style.height * .67, style.width / 2),
+        "bounds.north-west",
+        (to: "bounds.south-west", rel: (style.width * .33, 0)),
+        ..style,
         fill: black,
+        stroke: (dash: "solid"),
     )
 }
 
@@ -27,10 +54,14 @@
 #let mirror(
     /// -> str
     name,
+    /// what kind of mirror to draw. Supported mirrors are
+    /// #("(", ")", "|").map(repr).map(raw.with(lang: "typc")).join([, ], last: [ and ])
+    /// -> str
+    kind: "|",
     /// -> points | style | decoration
     ..points-style-decoration,
 ) = {
-    component("mirror", name, ..points-style-decoration, sketch: sketch, num-points: (1, 3))
+    component("mirror", name, ..points-style-decoration, sketch: sketch.with(kind: kind), num-points: (1, 3))
 }
 
 #let flip-mirror = mirror.with(stroke: (dash: "densely-dashed"))
@@ -50,5 +81,5 @@
     /// -> points | style | decoration
     ..points-style-decoration,
 ) = {
-    component("grating", name, ..points-style-decoration, sketch: sketch, num-points: (1, 3))
+    component("grating", name, ..points-style-decoration, sketch: sketch.with(kind: "|"), num-points: (1, 3))
 }

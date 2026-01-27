@@ -107,8 +107,8 @@
         axis: auto,
         label: (pos: 0deg),
         debug: auto,
-        width: 1,
-        height: .3,
+        width: .3,
+        height: 1,
     ),
     laser: (
         scale: auto,
@@ -138,8 +138,9 @@
         axis: auto,
         label: (pos: 0deg),
         debug: auto,
-        width: 1,
-        height: .3,
+        width: .3,
+        height: 1,
+        extent: .1,
     ),
     objective: (
         scale: auto,

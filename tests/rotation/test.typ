@@ -7,7 +7,7 @@
         cetz.draw.translate(y: -1.1)
 
         let position = ((0, 0), (.5, 0), (rel: (radius: .5, angle: 1deg * a)))
-        mirror("mirror", ..position, debug: false)
         cetz.draw.line(..position, stroke: red)
+        mirror("mirror", ..position, debug: false)
     })
 }
