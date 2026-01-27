@@ -113,9 +113,9 @@
 /// >>> ]
 /// ```
 #let sketch-label(
-    /// -> str
+    /// component's name (identifier)-> str
     name,
-    /// -> angle
+    /// component's rotation -> angle
     rotation,
     /// #set raw(lang: "typc")
     ///  ```none

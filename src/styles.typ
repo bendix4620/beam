@@ -16,7 +16,7 @@
         content: none,
         anchor: auto,
         rotate: auto,
-        padding: 7pt,
+        padding: .1,
     ),
     debug: (
         stroke: (
@@ -198,6 +198,6 @@
 
 /// get currently active style
 #let get-beam-style(
-    /// -> context
+    /// -> style
     ctx,
 ) = { cetz.styles.resolve(ctx.beam.style) }

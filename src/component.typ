@@ -2,7 +2,7 @@
 
 #import "dependencies.typ": cetz
 #import "decoration.typ": sketch-axis, sketch-debug, sketch-label
-#import cetz: coordinate, draw, matrix, styles
+#import cetz: coordinate, draw, styles
 
 // wrap drawing logic
 // Resolves points and style and applies proper scoping, so that "last used coordinate" is correct
@@ -38,34 +38,73 @@
     /// -> str
     name,
     /// Points (positional) and style (named) just like when using cetz's shapes
+    ///
+    /// Components may support 1-3 points. These define how they are positioned and rotated
+    /// / 1 point: places component at the given point. Rotate by passing`rotate: <angle>`
+    /// / 2 points: place component between the given points and rotated to face in the direction of the latter point. Tune the position by passing `position: <...>` (for some components the position cannot be changed)
+    /// / 3 points: place component at the $2$nd given point and rotated to face the bisector of the angle spanned by the 3 points. This can emulate reflection/reflection, thus only refractive/reflective components support 3 point positioning.
+    ///
+    /// Given style parameters are merged with the component's global style definition. You can check the default style of any given components with #raw(lang: "typst", `#cetz.styles.resolve(beam.styles.default, root: "<component name>")`.text)
+    ///
+    /// The remaining arguments are referred to as type:decoration
     /// -> coordinate | style
     ..points-style,
     /// Position between start and end point. Only works when 2 points are given
-    /// -> ratio
+    /// -> int | float | relative | length | ratio
     position: 50%,
     /// Rotate the component. Only works when 1 point is given.
     /// -> angle
     rotate: 0deg,
     /// optical axis decoration
-    /// - `auto` uses global style (equiv. to #raw(lang: "typc", "(:)"))
-    /// - `bool` will turn axis on or off (equiv. to #raw(lang: "typc", "(enabled: axis)"))
-    /// - `dictionary` will be merged with global style.
-    /// See named parameters of @sketch-axis for valid definitions
+    /// - type:auto uses global style (equiv. to #raw(lang: "typc", "(:)"))
+    /// - type:bool will turn axis on or off (equiv. to #raw(lang: "typc", "(enabled: axis)"))
+    /// - type:dictionary will be merged with global style.
+    ///
+    /// Valid dictionary keys are
+    /// #pad(x: 5%, ```none
+    /// enabled: type:bool
+    /// length: type:int type:float
+    /// stroke: type:stroke type:dictionary
+    /// ```)
+    /// Please refer to @sketch-axis for the documentation of each field/parameter
     /// -> auto | bool | style
     axis: auto,
     /// debug info decoration
-    /// - `auto` uses global style (equiv. to #raw(lang: "typc", "(:)"))
-    /// - `bool` will turn axis on or off (equiv. to #raw(lang: "typc", "(enabled: debug)"))
+    /// - type:auto uses global style
+    /// - type:bool will turn axis on or off (e.g. `(enabled: <value>)`)
     /// - `dictionary` will be merged with global style.
-    /// See named parameters of @sketch-debug for valid definitions
+    ///
+    /// Valid dictionary keys are
+    /// #pad(x: 5%, ```none
+    /// enabled: type:bool
+    /// stroke: type:stroke type:dictionary
+    /// radius: type:length
+    /// angle: type:angle
+    /// shift: type:length
+    /// inset: type:length type:dictionary
+    /// fsize: type:length
+    /// fill: type:color
+    /// ```)
+    /// Please refer to @sketch-debug for the documentation of each field/parameter
     /// -> auto | bool | style
     debug: auto,
     /// label decoration
-    /// - `auto` uses global style (equiv. to #raw(lang: "typc", "(:)"))
-    /// - `none` and `content` will overwrite the displayed content (equiv. to #raw(lang: "typc", "(content: label)"))
+    /// - type:auto uses global style
+    /// - type:none and type:content will overwrite the displayed content, e.g. `(content: <value>)`
     /// - `dictionary` will be merged with global style.
-    /// See named parameters of @sketch-label for vlaid definitions
-    /// -> auto | none | content | dictionary
+    ///
+    /// Valid dictionary keys are
+    /// #pad(x: 5%, ```none
+    /// scope: type:str
+    /// pos: type:str type:angle
+    /// content: type:none type:content
+    /// anchor: type:auto type:str
+    /// angle: type:auto type:angle
+    /// padding: type:int type:float type:length type:dictionary
+    /// ..style: type:style
+    /// ```)
+    /// Please refer to @sketch-label for the documentation of each field/parameter
+    /// -> auto | none | content | style
     label: auto,
 ) = {
     let points = points-style.pos()
@@ -171,7 +210,7 @@
 
 /// Create a bounding box for a component
 ///
-/// cetz's `rect-around()` does not work properly on groups with rotation, so a manual bounidng box is necessary
+/// cetz's `rect-around()` does not work properly on groups with rotation, so a manual bounding box is necessary
 #let interface(
     /// lower left point of the bbox
     /// -> coordinate
@@ -179,7 +218,7 @@
     /// upper right point of the bbox
     /// -> coordinate
     ur,
-    /// wether to automaically create input and output anchors
+    /// wether to automatically create input and output anchors
     /// -> bool
     io: false,
 ) = {

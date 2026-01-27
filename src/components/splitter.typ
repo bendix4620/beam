@@ -9,6 +9,8 @@
 ///     beam-splitter("", (0, 0))
 /// })
 /// ```
+/// #doc-points[1-3]
+/// #doc-style("beam-splitter")
 #let beam-splitter(
     /// -> name
     name,
@@ -49,6 +51,8 @@
 ///     beam-splitter-plate("", (0, 0))
 /// })
 /// ```
+/// #doc-points[1-3]
+/// #doc-style("beam-splitter-plate")
 #let beam-splitter-plate(
     /// -> str
     name,

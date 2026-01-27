@@ -22,6 +22,8 @@
 ///     flip-mirror("", (2, 0))
 /// })
 /// ```
+/// #doc-points[1 or 3]
+/// #doc-style("mirror")
 #let mirror(
     /// -> str
     name,
@@ -40,6 +42,8 @@
 ///     grating("", (0, 0))
 /// })
 /// ```
+/// #doc-points[1 or 3]
+/// #doc-style("grating")
 #let grating(
     /// -> str
     name,

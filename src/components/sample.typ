@@ -9,6 +9,8 @@
 ///     sample("", (0, 0))
 /// })
 /// ```
+/// #doc-points[1-2]
+/// #doc-style("sample")
 #let sample(
     /// -> str
     name,

@@ -9,11 +9,15 @@
 ///     laser("", (0, 0))
 /// })
 /// ```
+/// #doc-points[1-2]
+/// #doc-style("laser")
 #let laser(
     /// -> str
     name,
     /// -> coordinate | style | decoration
     ..points-style-decoration,
+    /// -> int | float | relative | length | ratio
+    position: 0%,
 ) = {
     let sketch(ctx, points, style) = {
         interface((-style.length, -style.height / 2), (0, style.height / 2), io: points.len() < 2)
@@ -29,5 +33,5 @@
             ..style,
         )
     }
-    component("laser", name, ..points-style-decoration, sketch: sketch, position: 0%)
+    component("laser", name, ..points-style-decoration, sketch: sketch, position: position)
 }

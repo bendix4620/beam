@@ -9,6 +9,8 @@
 ///     detector("", (0, 0))
 /// })
 /// ```
+/// #doc-points[1-2]
+/// #doc-style("detector")
 #let detector(
     /// -> str
     name,

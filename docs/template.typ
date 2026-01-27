@@ -1,4 +1,4 @@
-#import "@preview/codly:1.3.0": codly, codly-init, no-codly
+#import "style.typ"
 
 // The project function defines how your document looks.
 // It takes your content and some metadata and formats it.
@@ -73,64 +73,40 @@
 
     // Main body.
     set par(justify: true)
-    v(7em)
-
-    pad(x: 10%, outline(depth: 1, indent: 2em))
-    pagebreak()
-
-    show: codly-init.with()
-    codly(
-        fill: white,
+    v(1fr)
+    let toc = outline(title: none, depth: 2)
+    align(center, heading(outlined: false, numbering: none, [Table of Contents]))
+    context block(
+        height: measure(toc).height / 2 + .65em,
+        columns(2, toc),
     )
+    v(1fr)
+    pagebreak(weak: true)
 
+    // configure code/examples
+    set raw(lang: "notnone")
     show raw.where(block: true): set text(size: .95em)
-    show raw.where(block: true): it => pad(x: 4%, it)
-    show raw.where(block: false, lang: "typ").or(raw.where(lang: "notnone")): it => box(
+    show raw.where(block: true): set block(breakable: false)
+    show raw.where(lang: "notnone"): it => box(
         inset: (x: 3pt),
         outset: (y: 3pt),
         radius: 40%,
         fill: luma(235),
         it,
     )
-    set raw(lang: "notnone")
+
+    // shorthand for typ highlighitng
+    show regex("type:(\w+)"): it => style.show-type(it.text.trim("type:", at: start, repeat: false))
+
+    // only number headings down to the function level, no numbering on parameters
+    set heading(numbering: "1.1")
+    show heading: it => {
+        if it.level > 3 {
+            return it.body
+        }
+        it
+    }
     body
 }
 
-#let ref-fn(name, prefix: "internal-") = link(label(prefix + name), raw(name))
-
-#let file-code(filename, code) = pad(x: 4%, block(
-    width: 100%,
-    fill: rgb("#239DAE").lighten(80%),
-    inset: 1pt,
-    stroke: rgb("#239DAE") + 1pt,
-    radius: 3pt,
-    {
-        block(align(right, text(raw(filename, lang: "cmd"))), width: 100%, inset: 5pt)
-        v(1pt, weak: true)
-        move(dx: -1pt, line(length: 100% + 2pt, stroke: 1pt + rgb("#239DAE")))
-        v(1pt, weak: true)
-        pad(x: -4.3%, code)
-    },
-))
-
-
-#let tidy-output-figure(
-    output,
-    breakable: false,
-    fill: none,
-) = no-codly({
-    set heading(numbering: none)
-    set text(size: .8em)
-    show figure: set block(breakable: breakable)
-    figure(align(left, block(
-        width: 80%,
-        fill: fill,
-        stroke: 0.5pt + luma(200),
-        inset: 20pt,
-        radius: 10pt,
-        block(
-            breakable: breakable,
-            output,
-        ),
-    )))
-})
+#let ref-fn(name, prefix: "internal-") = link(label(prefix + name), raw(lang: none, name))

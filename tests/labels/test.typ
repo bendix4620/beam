@@ -11,31 +11,28 @@
             content: rect(stroke: red)[Label],
             scope: "local",
             pos: a,
+            padding: .1,
         ))
         detector("", (0, 0), rotate: 45deg, label: (
             content: rect(stroke: green)[Label],
             scope: "local",
             pos: a,
             angle: auto,
-            padding: .2,
+            padding: .1,
         ))
         detector("", (0, 0), rotate: 45deg, label: (
             content: rect(stroke: blue)[Label],
             scope: "parent",
             pos: a,
+            padding: .2,
         ))
-        detector(
-            "",
-            (0, 0),
-            rotate: 45deg,
-            label: (
-                content: rect[Label],
-                scope: "parent",
-                pos: a,
-                angle: auto,
-                padding: .1,
-            ),
-        )
+        detector("", (0, 0), rotate: 45deg, label: (
+            content: rect(stroke: black)[Label],
+            scope: "parent",
+            pos: a,
+            angle: auto,
+            padding: .1,
+        ))
     })
 }
 

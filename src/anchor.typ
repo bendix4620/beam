@@ -13,19 +13,42 @@
         .to-dict()
 )
 
-#let normalize-angle(a) = {
+/// force an angle to the range [0, 360°] -> angle
+#let normalize-angle(
+    /// -> angle
+    a,
+) = {
     let x = calc.rem(a.deg(), 360) * 1deg
     x + 360deg * int(x < 0deg)
 }
 
-#let anchor-to-angle(anchor) = {
+/// Get the angle corresponding to an anchor or the anchor itself
+///  if it cannot be associated with an angle.
+/// ```example
+/// >>> #import beam.anchor: anchor-to-angle
+/// #("east", "north", "center").map(anchor-to-angle)
+/// ```
+/// -> any | angle
+#let anchor-to-angle(
+    /// -> any
+    anchor,
+) = {
     if type(anchor) != str {
         return anchor
     }
     anchor-to-angle-table.at(anchor, default: anchor)
 }
 
-#let angle-to-anchor(angle) = {
+/// Get the anchor closest to an angle.
+/// ```example
+/// >>> #import beam.anchor: angle-to-anchor
+/// #(0deg, 35deg).map(angle-to-anchor)
+/// ```
+/// -> str
+#let angle-to-anchor(
+    /// -> angle
+    angle,
+) = {
     let bins = anchor-to-angle-table.values()
     let anchors = anchor-to-angle-table.keys()
     let nangle = normalize-angle(angle - 22.5deg)
@@ -33,8 +56,16 @@
     if i == none { anchors.first() } else { anchors.at(i) }
 }
 
-// Gives the opposite anchor
-#let opposite-anchor(anchor) = {
+/// Get the opposite anchor
+/// ```example
+/// >>> #import beam.anchor: opposite-anchor
+/// #("east", "north", "center").map(opposite-anchor)
+/// ```
+/// -> str
+#let opposite-anchor(
+    /// -> str
+    anchor,
+) = {
     if anchor == "north" {
         "south"
     } else if anchor == "south" {
