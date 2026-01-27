@@ -3,7 +3,6 @@
 
 #beam.setup({
     import beam: *
-
     // draw your setup, for example...
     laser("laser", (0, 0))
     lens("l1", (1, 0))

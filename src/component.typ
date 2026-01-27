@@ -24,6 +24,8 @@
 }
 
 /// Handle component creation
+///
+/// This function automates the positioning and rotation of components, resolves the style parameters, and adds in available decorations.
 #let component(
     /// Component type identifyer. Used to find the correct style
     /// -> str

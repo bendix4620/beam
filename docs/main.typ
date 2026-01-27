@@ -48,15 +48,9 @@ Styling works just like in #cetz. However, beam uses a dedicated functions for s
     scope: (beam: beam),
     load-example("/examples/styling.typ"),
 )
-The default style of any component can be inspected by
-```typst
-#cetz.styles.resolve(beam.styles.default, root: "<id>")
-```
 
-#pagebreak(weak: true)
-= The Component Interface
-This section describes the common interface of all components.
-== Interface
+= The Common Component Interface
+All components (except #ref-fn(prefix: "components-", "beam()")) accept the following parameters:
 #{
     let data = tidy.parse-module(read("/src/component.typ"), scope: (beam: beam))
     let func = data.functions.find(it => it.name == "component")
@@ -82,10 +76,12 @@ This section describes the common interface of all components.
 
 == Anchors
 #let list-anchors(..arr) = arr.pos().map(repr).map(raw.with(lang: "typc")).join(", ", last: " and ")
-Components come with a rotating bounding box and many anchors.
+Components come with a rotating bounding box and many anchors. Anchors
 #list-anchors(..beam.anchor.anchor-to-angle-table.keys(), "center") are placed at the corresponding bounding box positions and #list-anchors("o") at the component's position. #list-anchors("in", "out") are placed at the first and last given point, in case 2 or 3 point positioning is used.
 
 #pagebreak()
+= Components
+This section offers a comprehensive list of all the available components
 #let doc-style(root) = [
     === Style
     style id: #raw(lang: "typc", repr(root))\
@@ -104,7 +100,6 @@ Components come with a rotating bounding box and many anchors.
     Supports #points points
 ]
 
-= Components
 #let component-docs = tidy.parse-module(
     (
         read("/src/components/beam.typ"),
@@ -124,13 +119,15 @@ Components come with a rotating bounding box and many anchors.
     enable-curried-functions: false,
 )
 
-#tidy.show-module(
-    component-docs,
-    first-heading-level: 1,
-    style: style,
-)
+#{
+    show heading.where(level: 1).or(heading.where(level: 2)): it => colbreak(weak: true) + it
+    tidy.show-module(
+        component-docs,
+        first-heading-level: 1,
+        style: style,
+    )
+}
 
-#pagebreak()
 = Custom Components
 Custom components can be easily created with the help of #ref-fn("component()") and #ref-fn("interface()"). The example below creates a simple rectangle as a component. You can use it as a starting point to draw all the components you need.
 #style.show-example(
