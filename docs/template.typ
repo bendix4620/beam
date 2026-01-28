@@ -99,7 +99,7 @@
     show regex("type:(\w+)"): it => style.show-type(it.text.trim("type:", at: start, repeat: false))
 
     // only number headings down to the function level, no numbering on parameters
-    set heading(numbering: "1.1")
+    set heading(numbering: "1.1.a.1")
     show heading: it => {
         if it.level > 3 {
             return it.body
