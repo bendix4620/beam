@@ -9,12 +9,12 @@
     subtitle: "draw optics experiment setups with CeTZ",
     url: url,
     date: datetime.today().display(),
-    version: "0.1.0",
+    version: "0.1.1",
     abstract: [In a landscape dominated by copy pasting inkscape templates, *beam* aims to simplify the creation of schematics for experiment setups in the field of optics.],
 )
 
 #let load-example(file) = {
-    let preamble = "<<<#import \"@preview/beam:0.1.0\"\n"
+    let preamble = "<<<#import \"@preview/beam:0.1.1\"\n"
     let code = read(file)
     raw(preamble + code.split("\n").slice(2).join("\n"))
 }
