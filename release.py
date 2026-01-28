@@ -32,15 +32,15 @@ if __name__ == "__main__":
     dst = "latest.zip"
     include = ["examples", "src", "LICENSE", "manual.pdf", "README.md", "typst.toml"]
 
-    # subprocess.run(
-    #     ["tt", "run"],
-    #     cwd=src,
-    # ).check_returncode()
-    # subprocess.run(
-    #     ["typst", "compile", "--root", ".", "docs/main.typ", "manual.pdf"],
-    #     cwd=src,
-    # ).check_returncode()
+    subprocess.run(
+        ["tt", "run"],
+        cwd=src,
+    ).check_returncode()
+    subprocess.run(
+        ["typst", "compile", "--root", ".", "docs/main.typ", "manual.pdf"],
+        cwd=src,
+    ).check_returncode()
 
-    # print("\ncompiled manual.pdf")
+    print("\ncompiled manual.pdf")
 
     zip_release(src, dst, include=include)
