@@ -2,6 +2,7 @@
 
 **beam** aims to simplify the creation of schematics for experiment setups in the field of optics.
 
+Spin up the canvas just like when using [CeTZ](https://typst.app/universe/package/cetz/) or [zap](https://typst.app/universe/package/zap):
 ```typst
 #import "@preview/beam:0.1.0"
 
@@ -12,22 +13,20 @@
 })
 ```
 
-## Examples
-A Michelson interferometer and [more](./examples)
+## Documentation
+Please refer to the [manual](manual.pdf?raw=true) for proper documentation.
 
+## Examples
+Be sure to check out the [examples](./examples) for inspiration!
+
+### Michselson Interferometer
 ![michselson interferometer](./examples/michelson.png)
 
-## Documentation
-Automatically generate the [manual](manual.pdf) via [tidy](https://typst.app/universe/package/tidy/)
-```shell
-typst compile --root . docs/main.typ manual.pdf
-```
+### Mode Cleaner Cavity
+![mode cleaner cavity](./examples/cavity.png)
 
-## Tests
-Run tests locally with [tytanic](https://github.com/typst-community/tytanic)
-```shell
-tytanic run --no-fail-fast
-```
+### Photoluminescence Microscopy
+![photoluminescence microscopy](./examples/photolumi.png)
 
 ## Credits
 I built this package on the foundations of the fabulous [zap](https://typst.app/universe/package/zap/).

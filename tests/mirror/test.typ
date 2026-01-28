@@ -3,6 +3,11 @@
 
 // Test symbols
 #test({
+    mirror("", (0, 0), kind: "|")
+    mirror("", (1, 0), kind: ")")
+    mirror("", (2, 0), kind: "(")
+})
+#test({
     mirror("", (0, 0), (1, 0), (1, 1))
 })
 

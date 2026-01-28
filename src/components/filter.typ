@@ -10,6 +10,8 @@
 ///     flip-filter("", (2, 0))
 /// })
 /// ```
+/// #doc-points[1-2]
+/// #doc-style("filter")
 #let filter(
     /// -> str
     name,
@@ -37,12 +39,14 @@
 ///     filter-rot("", (0, 0))
 /// })
 /// ```
+/// #doc-points[1-2]
+/// #doc-style("filter-rot")
 #let filter-rot(
     /// -> str
     name,
     /// -> coordinate | style | decoration
     ..points-style-decoration,
-    /// flip the filter -> true
+    /// flip the filter -> bool
     flip: false,
 ) = {
     let sketch(ctx, position, style) = {

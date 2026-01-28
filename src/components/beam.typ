@@ -3,7 +3,7 @@
 #import cetz: vector
 #import cetz.draw: *
 
-/// laser beam
+/// draw a laser beam
 /// ```example
 /// #beam.setup({
 ///     import beam: *
@@ -11,14 +11,22 @@
 ///     beam("", "m1.in", "m1", "m1.out")
 /// })
 /// ```
+/// #doc-points($>=2$)
+/// #doc-style("beam")
+/// === Notes
+/// Does not follow the component interface:
+/// - no support for decorations (`axis`, `label`, `debug`, `position`, `rotation`)
+/// - no bounding box
+/// - an anchor is placed at each given point #[#set raw(lang: "typc");(`"in"`, `"a"`, `"b"`, ..., `"out"`)]
+///
 #let beam(
     /// -> str
     name,
-    /// -> coordinate | style | decoration
-    ..points-style-decoration,
+    /// -> coordinate | style
+    ..points-style,
 ) = {
-    let points = points-style-decoration.pos()
-    let style-decoration = points-style-decoration.named()
+    let points = points-style.pos()
+    let style-decoration = points-style.named()
     assert(points.len() >= 2, message: "need at least 2 nodes")
 
     wrap-ctx(points, style-decoration, "beam", (ctx, points, style) => {
@@ -47,6 +55,8 @@
 ///     focus("", "l2", (4, 0))
 /// })
 /// ```
+/// #doc-points[2]
+/// #doc-style("beam")
 #let focus(
     /// -> str
     name,
@@ -90,13 +100,14 @@
 ///     fade("", "l1", "l1.out")
 /// })
 /// ```
+/// #doc-points[2]
+/// #doc-style("beam")
 #let fade(
     /// -> str
     name,
     /// -> coordinate | style | decoration
     ..points-style-decoration,
-    /// flip the fade direction
-    /// -> bool
+    /// flip the fade direction -> bool
     flip: false,
 ) = {
     assert.eq(type(flip), bool, message: "flip must be bool")

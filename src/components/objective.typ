@@ -9,6 +9,8 @@
 ///     objective("", (0, 0), rotate: 90deg)
 /// })
 /// ```
+/// #doc-points[1-2]
+/// #doc-style("objective")
 #let objective(
     /// -> str
     name,

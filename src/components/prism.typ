@@ -10,6 +10,8 @@
 ///     prism("", (0, 0))
 /// })
 /// ```
+/// #doc-points[1 or 3]
+/// #doc-style("prism")
 #let prism(
     /// -> str
     name,

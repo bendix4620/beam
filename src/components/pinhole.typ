@@ -9,6 +9,8 @@
 ///     pinhole("", (0, 0))
 /// })
 /// ```
+/// #doc-points[1-2]
+/// #doc-style("pinhole")
 #let pinhole(
     /// -> str
     name,

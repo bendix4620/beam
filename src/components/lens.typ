@@ -13,6 +13,8 @@
 ///     lens("", (3, 0), kind: "(|")
 /// })
 /// ```
+/// #doc-points[1-2]
+/// #doc-style("lens")
 #let lens(
     /// -> str
     name,

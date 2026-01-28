@@ -1,34 +1,17 @@
-#import "@preview/tidy:0.4.3"
-#import "style.typ"
+#import "dependencies.typ": tidy
 #import "template.typ": *
+#import "style.typ"
 #import "/src/lib.typ" as beam
 
-#show raw.where(block: false, lang: "type"): it => {
-    let type = it.text
-    if "()" in type {
-        return it
-    }
-    h(2pt)
-    let clr = tidy.styles.default.colors.at(type, default: tidy.styles.default.default-type-color)
-    box(outset: 2pt, fill: clr, radius: 2pt, it)
-    h(2pt)
-}
-
+#let url = "https://github.com/bendix4620/beam"
 #show: project.with(
     title: "beam",
     subtitle: "draw optics experiment setups with CeTZ",
-    url: "https://github.com/bendix4620/beam",
+    url: url,
     date: datetime.today().display(),
     version: "0.1.0",
-    abstract: [In a landscape dominated by copy pasting inkscape templates beam aims to simplify the creation of schematics for experiment setups in the field of optics.],
+    abstract: [In a landscape dominated by copy pasting inkscape templates, *beam* aims to simplify the creation of schematics for experiment setups in the field of optics.],
 )
-#set heading(numbering: "1.1")
-#show heading: it => {
-    if it.level > 3 {
-        return it.body
-    }
-    it
-}
 
 #let load-example(file) = {
     let preamble = "<<<#import \"@preview/beam:0.1.0\"\n"
@@ -39,38 +22,84 @@
 #let cetz = link("https://github.com/cetz-package/cetz", [CeTZ])
 #let zap = link("https://github.com/l0uisgrange/zap", [zap]) + emoji.lightning
 
+= About
+I built this package, because I was frustrated with the available tools to draw schematics for simple optical setups. The options available to me were full-fledged simulation software, blender, and a certain #link("https://www.gwoptics.org/ComponentLibrary/", [Inkscape template]). None of these suit my preferences -- or skills.
+
+Amazed by the simplicity of #zap, I gathered inspiration from colleagues and friends and started drawing some symbols and extended the framework on the fly.
+
+Please get in touch with me on #link(url)[github] if you discover any bugs or have ideas for improvement!
+
 = Getting Started
-beam is heavily inspired by #zap. The usage should feel very familiar to those accustomed to it.
+beam is heavily inspired by #zap. The usage should feel very familiar to those accustomed to it. Just copy the example below and play around with the component parameters.
 
 #style.show-example(
     scope: (beam: beam),
     load-example("/examples/quickstart.typ"),
 )
+Be sure to check out the `examples` directory in the #link(url)[repository] for more inspiration.
 
-All components accept 1-3 coordinates#footnote[except #ref-fn(prefix: "components-", "beam()"), it takes $>=2$ coordinates]. The coordinates can be anything that #cetz can parse and are used to position the components automatically
-
-/ 1 coordinate: places the component at the given point. It can be rotated by passing `rotate: <angle>` to the component's function.
-/ 2 coordinates: alignes the component between the given points. The position can be adjusted by passing `position: <ratio>` to the component#footnote[For some components this value is always fixed].
-/ 3 coordinates: alignes the component to mimic reflection/refraction. It is placed at the middle point and is rotated to face the bisector of the angle spanned by the 3 points.
-
-Please note that there is no standard for depicting optical components, so I gathered all the inspiration from colleagues, friends and certain #link("https://www.gwoptics.org/ComponentLibrary/", [Inkscape template]) and simply drew some symbols.
-
-#pagebreak()
 = Styling
-Styling works just like in #cetz. However, beam uses a dedicated function for styling to not interfere with other #cetz;-based libraries.
+Styling works just like in #cetz. However, beam uses a dedicated functions for styling to not interfere with other #cetz;-based libraries:
+- #ref-fn("set-beam-style()", prefix: "internal-") to change the current global style
+- #ref-fn("get-beam-style()", prefix: "internal-") to get the current global style from #cetz's context
 
-Styling can be applied globally or locally on any given component.
+#block(sticky: true)[Style can also be configured locally on any given component.]
 #style.show-example(
     scope: (beam: beam),
     load-example("/examples/styling.typ"),
 )
 
+= The Common Component Interface
+All components (except #ref-fn(prefix: "components-", "beam()")) accept the following parameters:
+#{
+    let data = tidy.parse-module(read("/src/component.typ"), scope: (beam: beam))
+    let func = data.functions.find(it => it.name == "component")
+    let _ = func.args.remove("root", default: none)
+    let _ = func.args.remove("sketch", default: none)
+    let _ = func.args.remove("num-points", default: none)
+    func.description = ""
+    data.functions = (func,)
+
+    set heading(outlined: false)
+    show selector.or(heading.where(level: 2), heading.where(level: 3)): none
+    tidy.show-module(
+        data,
+        style: style,
+        enable-cross-references: false,
+        show-outline: false,
+        show-module-name: false,
+        sort-functions: false,
+        first-heading-level: 1,
+        break-param-descriptions: false,
+    )
+}
+
+== Anchors
+#let list-anchors(..arr) = arr.pos().map(repr).map(raw.with(lang: "typc")).join(", ", last: " and ")
+Components come with a rotating bounding box and many anchors. Anchors
+#list-anchors(..beam.anchor.anchor-to-angle-table.keys(), "center") are placed at the corresponding bounding box positions and #list-anchors("o") at the component's position. #list-anchors("in", "out") are placed at the first and last given point, in case 2 or 3 point positioning is used.
+
 #pagebreak()
 = Components
-#show raw.where(block: true): set block(breakable: false)
-All components follow the same interface. Below is a list of the available optical components. Parameters without dedicated description are passed to #ref-fn("component()").
+This section offers a comprehensive list of all the available components
+#let doc-style(root) = [
+    === Style
+    style id: #raw(lang: "typc", repr(root))\
+    default values: #v(.65em, weak: true)
+    #pad(left: 15pt, {
+        set par(leading: .5em)
+        let style = beam.styles.default.at(root)
+        for (key, val) in style {
+            raw(lang: "typc", key + ": " + repr(val) + ",\n", block: false)
+            // linebreak()
+        }
+    })
+]
+#let doc-points(points) = [
+    === Points
+    Supports #points points
+]
 
-#set raw(lang: "type")
 #let component-docs = tidy.parse-module(
     (
         read("/src/components/beam.typ"),
@@ -85,16 +114,22 @@ All components follow the same interface. Below is a list of the available optic
         read("/src/components/sample.typ"),
         read("/src/components/splitter.typ"),
     ).join("\n"),
-    scope: (beam: beam),
+    scope: (beam: beam, doc-style: doc-style, doc-points: doc-points),
     label-prefix: "components-",
     enable-curried-functions: false,
 )
 
-#tidy.show-module(component-docs, first-heading-level: 1, style: style)
+#{
+    show heading.where(level: 1).or(heading.where(level: 2)): it => colbreak(weak: true) + it
+    tidy.show-module(
+        component-docs,
+        first-heading-level: 1,
+        style: style,
+    )
+}
 
-#pagebreak()
 = Custom Components
-Custom components can be easily created with the help of #ref-fn("component()") and #ref-fn("interface()").
+Custom components can be easily created with the help of #ref-fn("component()") and #ref-fn("interface()"). The example below creates a simple rectangle as a component. You can use it as a starting point to draw all the components you need.
 #style.show-example(
     scope: (beam: beam),
     load-example("/examples/custom.typ"),
@@ -106,11 +141,11 @@ Custom components can be easily created with the help of #ref-fn("component()") 
     (
         read("/src/component.typ"),
         read("/src/decoration.typ"),
+        read("/src/anchor.typ"),
         read("/src/styles.typ"),
         read("/src/setup.typ"),
     ).join("\n"),
     scope: (beam: beam),
     label-prefix: "internal-",
 )
-#tidy.show-module(internal-docs, first-heading-level: 1, style: style)
-#tidy.styles.default
+#tidy.show-module(internal-docs, first-heading-level: 1, style: style, enable-cross-references: true)

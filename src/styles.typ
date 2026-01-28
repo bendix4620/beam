@@ -16,7 +16,7 @@
         content: none,
         anchor: auto,
         rotate: auto,
-        padding: 7pt,
+        padding: .1,
     ),
     debug: (
         stroke: (
@@ -107,8 +107,8 @@
         axis: auto,
         label: (pos: 0deg),
         debug: auto,
-        width: 1,
-        height: .3,
+        width: .3,
+        height: 1,
     ),
     laser: (
         scale: auto,
@@ -138,8 +138,9 @@
         axis: auto,
         label: (pos: 0deg),
         debug: auto,
-        width: 1,
-        height: .3,
+        width: .3,
+        height: 1,
+        extent: .1,
     ),
     objective: (
         scale: auto,
@@ -198,6 +199,6 @@
 
 /// get currently active style
 #let get-beam-style(
-    /// -> context
+    /// -> style
     ctx,
 ) = { cetz.styles.resolve(ctx.beam.style) }
